@@ -1,0 +1,37 @@
+language: generic
+services:
+- docker
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    env:
+    - DEPLOY_FILENAME=Shield_Linux.tar.gz
+    - DEPLOY_DIR=bin/linux
+    - DEPLOY_STATIC="--static"
+  - os: osx
+    env:
+    - DEPLOY_FILENAME=Shield_macOS.tar.gz
+    - DEPLOY_DIR=bin/darwin
+    - DEPLOY_STATIC=""
+    - LDFLAGS=-L/usr/local/opt/openssl/lib
+    - CPPFLAGS=-I/usr/local/opt/openssl/include
+    - PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
+    - PATH=/usr/local/opt/openssl/bin:$PATH
+install:
+- chmod +x bin/ci
+- bin/ci prepare_build
+script:
+- bin/ci build
+after_success:
+- bin/ci deploy
+deploy:
+  provider: releases
+  api_key:
+    secure: cNHWB1oIegnPzpbTCLQe4khQecgH90m5zvEAt0KOfP3EocbnYtMpDgIyLzfYKxrNG14XxlqedloyrFG9Jg6rEo/2sAYwVqAGYpoIi97dxIPMCa3ptRoSXw2YR179dgYSyPZugeOJx3xAR5IxiLQ/b3f2+bcUKFnjvhn0Kxd0f7qEXW1ZvmObkk2m1+hmcaNT2o2O1vThxC+jWwDDxDwBsoQL7aChrkE1mmPycUlCj30XBFJeDSBtoYcZt8/NVMjbVw74hjF2lYiZX3lp9+fMzGJ4iIGqvx4mkPgAohaii3jxeBDd92VJkj9UvYnDkQfRV6g79ozTym3bj0Dfff/OblJOm0SZX3XjT4bZQrUZoKgqTs9O+wTF6mnONm9GirOtxQ3c4IWAk+VyXoGxFA7R0gtaGRpnUME6tRXYkqpUhWXcPWUjKOXWJCxluqAFrCMDZlxZtwFin4mpk+U91AN3k6SJf5G6qsh4unk53ApWRRSkWQQYyn3Dhu2pWKTGfH6K2Rrve39LOSZmigLOwfZmzJdXCJNQuIxvLbSNnwaqF5znr9gOD2MySWexfOlEP+1Rg7O3CM+3M0CezbIdCuD1QuJa6+iazf3HJ3+T6oWX3Q49NNVDjSDaonx9aY3y53m3qhYjZvE+7hWeLV/U+2mKzUywInnBfUcLs9QTsVt2BQQ=
+  file: "$DEPLOY_FILENAME"
+  skip_cleanup: true
+  on:
+    tags: true
+    all_branches: true
+    repo: 636f7374/shield.cr

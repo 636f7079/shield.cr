@@ -1,0 +1,11 @@
+name: shield
+version: 0.2.2
+
+dependencies:
+  secrets:
+    github: faustinoaq/secrets
+
+authors:
+  - 636f7374
+
+license: MIT
