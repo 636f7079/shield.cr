@@ -14,7 +14,7 @@ class Shield::Builder
     @pbkdfSlider = Slider.new 0_i32, 0_i32, 1_i32
   end
 
-  def create
+  def render_create
     Render.ask_master_key do |master_key|
       Render.ask_secure_id option do |secure_id|
         Render.secure_id option, secure_id
@@ -45,23 +45,23 @@ class Shield::Builder
   {% for item in ["name", "email"] %}
   def iterative_{{item.id}}(key, id : String)
     {% if "name" == item.id %}
-      name_email = option.nameEmail.userName
+      name_email = option.nameEmail.userName.dup
       mixed = String.build do |io| 
         io << name_email.nonce << ":" << key 
       end
     {% else %}
-      name_email = option.nameEmail.email
+      name_email = option.nameEmail.email.dup
       mixed = String.build do |io|
         io << name_email.domain << ":" << key
       end
     {% end %}
     option.iterations = name_email.iterations
-    option.useSymbol = false
-    option.length = name_email.length; reset_slider
+    option.useSymbol = false ensure reset_slider
+    option.length = name_email.length
     create_key(mixed, id) do |done?, data|
       full_name = data.downcase.chars
-      start = Character.user_name full_name[0_i32..4_i32]
-      full_name.delete_at 0_i32..4_i32
+      start = Character.user_name full_name[0_i32..3_i32]
+      full_name.delete_at 0_i32..3_i32
       yield done?, String.build do |io|
         io << start.reverse << full_name.join
       end
@@ -142,8 +142,12 @@ class Shield::Builder
       pbkdf = OpenSSL::PKCS5.pbkdf2_hmac(secret: _hmac, salt: _rsa_,
         iterations: 2 ** 5, algorithm: OpenSSL::Algorithm::SHA512).hexstring
       slide pbkdfSlider, pbkdf.size, option.length
-      key = Character.obfuscate pbkdf[pbkdfSlider.left..pbkdfSlider.right], option
-      time + 1_i32 == option.iterations ? yield true, key : yield false, key
+      key = Character.hash_obfuscate pbkdf[pbkdfSlider.left..pbkdfSlider.right], option
+      if option.iterations == time + 1_i32
+        return yield true, Character.strict_obfuscate key, option
+      else
+        yield false, key
+      end
     end
   end
 end

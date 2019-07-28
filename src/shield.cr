@@ -13,7 +13,7 @@ module Shield::CommandParser
     puts <<-EOF
       Version:
         Shield.cr :: Password Generator
-        _Version_ :: #{VERSION} (2019.07.14)
+        _Version_ :: #{VERSION} (2019.07.29)
       EOF
   when "help", "--help", "-h"
     puts <<-EOF
@@ -25,16 +25,16 @@ module Shield::CommandParser
         help, --help, -h        Show this Shield: Password Generator Help
       Options:
         --iterations, -i [info]   Specify the Number of Iterations (e.g. 16384, 32768)
-        --length, -l [info]       Specify the SecretKey Length (Between 10 To 99)
-        --disable-symbol, -d      Generate SecretKey Without Symbol (Reduce Security)
+        --length, -l [info]       Specify the Length of SecretKey (Between 10 To 99)
+        --disable-symbol, -d      Generate SecretKey without Symbol (Reduce Security)
         --by-secure-id, -s        Retrieve SecretKey by MasterKey, SecureId
-        --with-pin, -p            With Create SecurePIN (SixDigit Code)
-        --with-name, -n [info]    With Create UserName (e.g. 8192,12, 16384,15)
-        --with-email, -e [info]   With Create Email Address (e.g. 1,12,mail.co)
+        --with-pin, -p            Create SecurePIN (Six-Digit PIN Code)
+        --with-name, -n [info]    Create UserName (e.g. 16384,12, 32768,15)
+        --with-email, -e [info]   Create Email Address (e.g. 16384,12,example.com)
       EOF
   when "find", "id", "--find"
     Builder.new(Option.new).find_id
   when "create", nil, String
-    Builder.new(Option.new).create
+    Builder.new(Option.new).render_create
   end
 end

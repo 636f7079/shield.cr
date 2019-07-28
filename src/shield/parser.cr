@@ -26,13 +26,13 @@ module Shield::Parser
   class Email
     include JSON::Serializable
     property iterations : Int32
-    property domain : String
     property length : Int32
+    property domain : String
 
     def initialize
       @iterations = 0_i32
-      @domain = String.new
       @length = 0_i32
+      @domain = String.new
     end
   end
 end
