@@ -25,34 +25,56 @@ class Shield::Option
         end
       end
       parser.on("-n +", "--with-name +", "") do |item|
-        if 2_i32 == (item = item.split ",").size
-          iterations, length = item
-          iterations.to_i?.try do |value|
-            if 0_i32 >= value
+        split = item.rpartition ","
+        split.first.try do |iterations|
+          iterations.to_i?.try do |_iterations|
+            if 0_i32 >= _iterations
               Render.error_option "UserName::Iterations"
-            end ensure nameEmail.userName.iterations = value
+            end
+
+            nameEmail.userName.iterations = _iterations
           end
-          length.to_i?.try do |value|
-            if 4_i32 > value
+        end
+
+        split.last.try do |length|
+          length.to_i?.try do |_length|
+            if 3_i32 >= _length
               Render.error_option "UserName::Length"
-            end ensure nameEmail.userName.length = value
-          end if 3_i32 > length.size
+            end
+
+            nameEmail.userName.length = _length
+          end
         end
       end
       parser.on("-e +", "--with-email +", "") do |item|
-        if 3_i32 == (item = item.split ",").size
-          iterations, length, domain = item
-          iterations.to_i?.try do |value|
-            if 0_i32 >= value
-              Render.error_option "Email::Iterations"
-            end ensure nameEmail.email.iterations = value
+        first_split = item.rpartition ","
+        first_split.first.try do |first|
+          last_split = first.rpartition ","
+          last_split.first.try do |iterations|
+            iterations.to_i?.try do |_iterations|
+              if 0_i32 >= _iterations
+                Render.error_option "Email::Iterations"
+              end
+
+              nameEmail.email.iterations = _iterations
+            end
           end
-          length.to_i?.try do |value|
-            if 4_i32 > value
-              Render.error_option "Email::Length"
-            end ensure nameEmail.email.length = value
-          end if 3_i32 > length.size
-          nameEmail.email.domain = domain unless domain.empty?
+
+          last_split.last.try do |length|
+            length.to_i?.try do |_length|
+              if 3_i32 >= _length
+                Render.error_option "Email::Length"
+              end
+
+              nameEmail.email.length = _length
+            end
+          end
+        end
+
+        first_split.last.try do |domain|
+          unless domain.empty?
+            nameEmail.email.domain = domain
+          end
         end
       end
       parser.on("-l +", "--length +", "") do |item|

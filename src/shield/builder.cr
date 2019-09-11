@@ -77,12 +77,12 @@ class Shield::Builder
 
   def create_pin!(key : String)
     crc32 = CRC32.checksum(key).to_s
-    l, r = Utilit.center crc32.size, 6_i32
+    l, r = Utils.center crc32.size, 6_i32
     yield crc32[l..r]
   end
 
   def create_email(key, id : String)
-    if 0_i32 < option.nameEmail.userName.length
+    if 0_i32 < option.nameEmail.email.length
       create_email!(key, id) do |done?, data|
         yield done?, data
       end
@@ -115,7 +115,7 @@ class Shield::Builder
   def slide(slider, hash, length)
     case [slider.left, slider.right]
     when [0_i32, 0_i32] of Int32
-      l, r = Utilit.center hash, length
+      l, r = Utils.center hash, length
       slider.left = l
       slider.right = r
     when [slider.left, hash - 1_i32]
@@ -134,10 +134,10 @@ class Shield::Builder
 
   def create_key(key : String, id : String)
     option.iterations.times do |time|
-      _rsa_ = String.build { |io| io << Utilit.digest(key) << ":" << id }
+      _rsa_ = String.build { |io| io << Utils.digest(key) << ":" << id }
       slide rsaSlider, _rsa_.size, _rsa_.size / 2_i32
       _hmac = String.build do |io|
-        io << id << ":" << Utilit.hmac _rsa_, Utilit.crc32(_rsa_).reverse
+        io << id << ":" << Utils.hmac _rsa_, Utils.crc32(_rsa_).reverse
       end
       pbkdf = OpenSSL::PKCS5.pbkdf2_hmac(secret: _hmac, salt: _rsa_,
         iterations: 2 ** 5, algorithm: OpenSSL::Algorithm::SHA512).hexstring

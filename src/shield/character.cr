@@ -19,11 +19,11 @@ module Shield::Character
   end
 
   def valid_range
-    {default: [0..0],
-     char:    [33..47, 58..63],
-     lower:   [103..122],
-     upper:   [71..90],
-     number:  [48..57]}
+    {default: [0_i32..0_i32],
+     char:    [33_i32..47_i32, 58_i32..63_i32],
+     lower:   [103_i32..122_i32],
+     upper:   [71_i32..90_i32],
+     number:  [48_i32..57_i32]}
   end
 
   def slice_sum(slice : Array(Char))
@@ -59,7 +59,7 @@ module Shield::Character
     type_to_range type do |range|
       arr_range = range.map(&.to_a).flatten
       total_ord = current.ord + add
-      ord = total_ord.to_s[-1].to_i
+      ord = total_ord.to_s[-1_i32].to_i
       return total_ord.chr if type == :default
       range.each do |_range|
         if _range.includes? total_ord
@@ -79,6 +79,9 @@ module Shield::Character
     when slice.size
       slice[current].ord + slice[slice.size - 1_i32].ord
     when 0_i32
+      unless slice[current + 1_i32]?
+        return slice[current].ord + slice.last.ord
+      end
       slice[current].ord + slice[1_i32].ord
     else
       slice[current].ord + slice[current - 1_i32].ord
@@ -169,7 +172,7 @@ module Shield::Character
   end
 
   def final_fill(text : String, option : Option)
-    text.chars.each_slice(4).map do |slice|
+    text.chars.each_slice(4_i32).map do |slice|
       n, l, u, c = total slice.join
       slice.each_with_index.map do |ch|
         if ch.first.lowercase?
@@ -217,7 +220,7 @@ module Shield::Character
   end
 
   def hash_obfuscate(text : String, option : Option)
-    text.chars.each_slice(4).map do |slice|
+    text.chars.each_slice(4_i32).map do |slice|
       n, l, u, c = total slice.join
       slice.each_with_index.map do |ch|
         if ch.first.lowercase?
