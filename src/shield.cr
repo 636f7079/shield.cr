@@ -13,7 +13,7 @@ module Shield::CommandParser
     puts <<-EOF
       Version:
         Shield.cr :: Password Generator
-        _Version_ :: #{VERSION} (2019.09.11)
+        _Version_ :: #{VERSION} (2019.09.23)
       EOF
   when "help", "--help", "-h"
     puts <<-EOF

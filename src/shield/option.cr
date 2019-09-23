@@ -1,6 +1,8 @@
 class Shield::Option
-  alias NameEmail = Parser::NameEmail
   include JSON::Serializable
+
+  alias NameEmail = Parser::NameEmail
+
   property useSymbol : Bool
   property iterations : Int32
   property idType : Bool
@@ -24,7 +26,11 @@ class Shield::Option
           @iterations = value if 0_i32 < value
         end
       end
-      parser.on("-n +", "--with-name +", "") do |item|
+      parser.on("--user-name", "") do |item|
+        nameEmail.userName.iterations = 16384_i32
+        nameEmail.userName.length = 12_i32
+      end
+      parser.on("-u +", "") do |item|
         split = item.rpartition ","
         split.first.try do |iterations|
           iterations.to_i?.try do |_iterations|
@@ -46,7 +52,7 @@ class Shield::Option
           end
         end
       end
-      parser.on("-e +", "--with-email +", "") do |item|
+      parser.on("-e +", "--email +", "") do |item|
         first_split = item.rpartition ","
         first_split.first.try do |first|
           last_split = first.rpartition ","
@@ -85,7 +91,7 @@ class Shield::Option
       parser.on("-s", "--by-secure-id", "") do
         @idType = true
       end
-      parser.on("-p", "--with-pin", "") do
+      parser.on("-p", "--pin", "") do
         @enablePin = true
       end
       parser.on("-d", "--disable-symbol", "") do

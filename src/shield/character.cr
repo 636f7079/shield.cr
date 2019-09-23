@@ -74,7 +74,7 @@ module Shield::Character
     end
   end
 
-  def hash_bytes(slice, current : Int32)
+  def hash_bytes_count(slice, current : Int32)
     case current
     when slice.size
       slice[current].ord + slice[slice.size - 1_i32].ord
@@ -91,13 +91,13 @@ module Shield::Character
   def offset_char(slice, current, odd, even : Symbol)
     case slice_sum(slice).odd?
     when true
-      if hash_bytes(slice, current).odd?
+      if hash_bytes_count(slice, current).odd?
         skip slice[current] + offset[even].last
       else
         skip slice[current] + offset[odd].first
       end
     when false
-      if hash_bytes(slice, current).odd?
+      if hash_bytes_count(slice, current).odd?
         skip slice[current] + offset[even].first
       else
         skip slice[current] + offset[odd].last
@@ -108,7 +108,7 @@ module Shield::Character
   def strict_offset_char(slice, current, type : Symbol)
     case slice_sum(slice).odd?
     when true
-      if hash_bytes(slice, current).odd?
+      if hash_bytes_count(slice, current).odd?
         strict_add(type, slice[current],
           offset[type].last).try do |data|
           skip data
@@ -120,7 +120,7 @@ module Shield::Character
         end
       end
     when false
-      if hash_bytes(slice, current).odd?
+      if hash_bytes_count(slice, current).odd?
         strict_add(type, slice[current],
           offset[type].first).try do |data|
           skip data
