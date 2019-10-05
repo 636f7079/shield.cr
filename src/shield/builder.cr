@@ -135,7 +135,7 @@ class Shield::Builder
   def create_key(key : String, id : String)
     option.iterations.times do |time|
       _rsa_ = String.build { |io| io << Utils.digest(key) << ":" << id }
-      slide rsaSlider, _rsa_.size, _rsa_.size / 2_i32
+      slide rsaSlider, _rsa_.size, (_rsa_.size / 2_i32).to_i32
       _hmac = String.build do |io|
         io << id << ":" << Utils.hmac _rsa_, Utils.crc32(_rsa_).reverse
       end

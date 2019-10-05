@@ -13,9 +13,9 @@ module Shield::Utils
      "\\1-\\2-\\3-\\4-\\5"]
   end
 
-  def self.create_id(title : String) : String
-    hash = Utils.digest title, "sha384"
-    l, r = Utils.center hash.size, 32_i32
+  def self.create_id(title : String)
+    hash = digest title, "sha384"
+    l, r = center hash.size, 32_i32
     hash[l..r].gsub(uuid.first,
       uuid.last.as String).upcase
   end
