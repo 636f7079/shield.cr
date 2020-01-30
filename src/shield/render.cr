@@ -23,32 +23,26 @@ module Shield::Render
   end
 
   def self.enter(name : String)
-    print String.build { |io|
+    String.build do |io|
       io << "Enter "
       io << name << ": "
-    }
+    end
   end
 
   def self.ask_master_key
-    enter "MasterKey"
-    yield Secrets.gets
+    yield Secret.gets enter "MasterKey"
   end
 
   def self.ask_secure_id(option : Option)
-    if option.idType
-      enter "Secure_Id"
-      yield Utils.input
-    else
-      enter "TitleName"
-      ip = Utils.input
-      yield Utils.create_id ip
-    end
+    return yield Utils.input enter "Secure_Id" if option.idType
+
+    input = Utils.input enter "TitleName"
+    yield Utils.create_id input
   end
 
   def self.secure_id(option, id : String)
-    unless option.idType
-      final "Secure_Id", id
-    end
+    return if option.idType
+    final "Secure_Id", id
   end
 
   def self.secret_key(key : String, done? : Bool)

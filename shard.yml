@@ -2,6 +2,9 @@ name: shield
 version: 0.2.4
 
 dependencies:
+  readline:
+    github: crystal-lang/crystal-readline
+
   secrets:
     github: faustinoaq/secrets
 

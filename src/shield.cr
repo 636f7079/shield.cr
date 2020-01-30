@@ -4,16 +4,16 @@ require "openssl"
 require "crc32"
 require "json"
 require "digest"
-require "secrets"
+require "readline"
 require "./shield/*"
 
 module Shield::CommandParser
-  case ARGV[0]?
+  case ARGV[0_i32]?
   when "version", "--version", "-v"
     puts <<-EOF
       Version:
         Shield.cr :: Password Generator
-        _Version_ :: #{VERSION} (2019.10.06)
+        _Version_ :: #{VERSION} (2020.01.31)
       EOF
   when "help", "--help", "-h"
     puts <<-EOF

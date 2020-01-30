@@ -32,7 +32,8 @@ module Shield::Utils
     OpenSSL::HMAC.hexdigest algorithm, key, data
   end
 
-  def self.input : String
-    STDIN.gets.to_s.chomp.rstrip
+  def self.input(prompt : String = String.new) : String
+    value = LibReadline.readline prompt
+    value.to_s
   end
 end
