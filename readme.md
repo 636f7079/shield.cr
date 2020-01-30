@@ -93,7 +93,7 @@ $ make test
 
 ## Credit
 * [\_Icon::categories/security](https://www.flaticon.com/packs/security-62)
-* [Shard::faustinoaq/secrets](https://github.com/faustinoaq/secrets)
+* [Shard::crystal-lang/crystal-readline](https://github.com/crystal-lang/crystal-readline)
 
 ## Contributors
 |Name|Creator|Maintainer|Contributor|
