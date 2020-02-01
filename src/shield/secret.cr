@@ -44,7 +44,7 @@ module Shield::Secret
         counter += 1_i32
       else
         input << typing
-        print hint
+        print hint * typing.size
       end
     end
 
