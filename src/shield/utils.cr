@@ -33,7 +33,6 @@ module Shield::Utils
   end
 
   def self.input(prompt : String = String.new) : String
-    value = LibReadline.readline prompt
-    value.to_s
+    String.new LibReadline.readline prompt
   end
 end
