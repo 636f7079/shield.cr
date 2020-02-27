@@ -2,7 +2,7 @@ FROM crystallang/crystal:latest
 
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get install openssl readline -y
+RUN apt-get install openssl libreadline-dev -y
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
