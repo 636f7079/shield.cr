@@ -28,6 +28,8 @@
   * **Currently, this repository is non-first priority, `2020-03-29 16:38:37.932649000 UTC`.**
 
 
+## Summary
+
 * Use multiple [Cryptographic hash function](https://en.wikipedia.org/wiki/Cryptographic_hash_function).
 * Based on the `Char` (Unicode) offset character.
 * Slide to adjust the secret key length.
