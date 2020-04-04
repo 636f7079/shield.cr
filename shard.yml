@@ -5,9 +5,6 @@ dependencies:
   readline:
     github: crystal-lang/crystal-readline
 
-  secrets:
-    github: faustinoaq/secrets
-
 authors:
   - 636f7374
 
