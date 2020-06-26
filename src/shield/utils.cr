@@ -21,11 +21,11 @@ module Shield::Utils
   end
 
   def self.crc32(text : String) : String
-    CRC32.checksum(text).to_s 16_i32
+    Digest::CRC32.checksum(text).to_s 16_i32
   end
 
   def self.digest(text, algorithm = "sha512WithRSAEncryption")
-    OpenSSL::Digest.new(algorithm).update(text).to_s
+    OpenSSL::Digest.new(algorithm).update(text).final.hexstring
   end
 
   def self.hmac(data, key, algorithm = OpenSSL::Algorithm::SHA512)

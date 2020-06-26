@@ -76,7 +76,7 @@ class Shield::Builder
   end
 
   def create_pin!(key : String)
-    crc32 = CRC32.checksum(key).to_s
+    crc32 = Digest::CRC32.checksum(key).to_s
     l, r = Utils.center crc32.size, 6_i32
     yield crc32[l..r]
   end
